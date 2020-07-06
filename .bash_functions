@@ -39,17 +39,17 @@ gitd() {
         
         echo ;
         # To lowercase
-        gitResult=$(git -C "${repo}" $1)
+        gitResult=$(git -C "${repo}" $1 2>&1)
         if [ "${1,,}" = "status" ]; then
             if [ -z "${gitResult##*'Your branch is up to date with'*}" ]; then 
-                printf "\e[38;2;153;255;153m${repoString}-\n"
+                repoString="\e[38;2;153;255;153m${repoString}-"
             else
-                printf "\e[38;2;255;153;153m${repoString}-\n"
+                repoString="\e[38;2;255;153;153m${repoString}-"
             fi
         else
-            printf "${repoString}"
+            repoString="${repoString}-"
         fi
 
-        printf "${gitResult}\n${fullWidthString:-repoLength}\n\e[0m"
+        printf -- "${repoString}\n${gitResult}\n${fullWidthString:-repoLength}\n\e[0m"
     done;
 }
